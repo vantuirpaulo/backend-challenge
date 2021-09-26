@@ -1,0 +1,8 @@
+{
+  "name": "ewally",
+  "version": "1.0.0",
+  "description": "Teste prático backend",
+  "main": "index.js",
+  "author": "Vantuir Paulo",
+  "license": "MIT"
+}
