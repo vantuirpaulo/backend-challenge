@@ -126,3 +126,11 @@ export const parseBoletoConvenio = (code: string): BoletoProps => {
 
   return { barCode, amount };
 };
+
+export const parse = (code: string): BoletoProps => {
+  if(code.charAt(0) === '8'){
+    return parseBoletoConvenio(code);
+  }
+
+  return parseBoletoTitulo(code);
+}
