@@ -9,7 +9,9 @@
     "start": "NODE_ENV=production node ./dist/server.js",
     "build": "tsc",
     "dev": "ts-node-dev --poll src/server.ts",
-    "test": "jest"
+    "test": "jest --no-cache",
+    "test:unit": "jest --no-cache --testPathPattern=/__test__/unit",
+    "test:integration": "jest --no-cache --testPathPattern=/__test__/integration"
   },
   "dependencies": {
     "cors": "^2.8.5",
