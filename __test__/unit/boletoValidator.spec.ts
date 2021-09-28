@@ -4,7 +4,10 @@ const data = {
   validBoletoTitulo: '21290001192110001210904475617405975870000002000',
   invalidBoletoTitulo: '212900011211000A10904475617409758700002000',
   validBoletoConvenio: '836300000012718701380013223258756111080992882466',
-  invalidBoletoConvenio: '836300000O127187013840013223235658756111080992882466'
+  invalidBoletoConvenio: '836300000O127187013840013223235658756111080992882466',
+
+  validBoletoField: '836300000012',
+  invalidBoletoField: '223258756112',
 };
 
 describe('Validate a boleto code', () => {
@@ -24,13 +27,29 @@ describe('Validate a boleto code', () => {
     const result = boletoValidator.isValidCodeFormat(data.invalidBoletoTitulo);
 
     expect(result).toBe(false);
-  })
+  });
 
   it('should be an invalid boleto code length', () => {
-    const result = boletoValidator.isValidCodeLength(data.invalidBoletoConvenio);
+    const result = boletoValidator.isValidCodeLength(
+      data.invalidBoletoConvenio
+    );
 
     expect(result).toBe(false);
-  })
+  });
 });
 
+describe('Validate field using module 10', () => {
+  it('should be a valid boleto code field', () => {
+    const result = boletoValidator.validateDvFieldMod10(data.validBoletoField);
 
+    expect(result).toBe(true);
+  });
+
+  it('should be an invalid boleto code field', () => {
+    const result = boletoValidator.validateDvFieldMod10(
+      data.invalidBoletoField
+    );
+
+    expect(result).toBe(false);
+  });
+});
