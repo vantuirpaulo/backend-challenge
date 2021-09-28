@@ -87,4 +87,13 @@ describe('Boleto parser', () => {
       expirationDate: '2018-07-16',
     });
   });
+
+  it('should return informations from the typed line of a boleto de convênio', () => {
+    const result = boletoParser.parseBoletoConvenio(data.validBoletoConvenio);
+
+    expect(result).toEqual({
+      barCode: '83630000001718701380012232587561108099288246',
+      amount: '171.87',
+    });
+  });
 });

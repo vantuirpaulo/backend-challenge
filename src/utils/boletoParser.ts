@@ -95,3 +95,34 @@ export const parseBoletoTitulo = (code: string): BoletoProps => {
 
   return { barCode, amount, expirationDate };
 };
+
+export const parseBoletoConvenio = (code: string): BoletoProps => {
+  const fields = getFieldsBoletoConvenio(code);
+  const reference = fields[0].slice(2, 3);
+
+  let isValidField1;
+  let isValidField2;
+  let isValidField3;
+  let isValidField4;
+
+  if (reference === '6' || reference === '7') {
+    isValidField1 = boletoValidator.validateDvMod10(fields[0]);
+    isValidField2 = boletoValidator.validateDvMod10(fields[1]);
+    isValidField3 = boletoValidator.validateDvMod10(fields[2]);
+    isValidField4 = boletoValidator.validateDvMod10(fields[3]);
+  } else if (reference === '8' || reference === '9') {
+    isValidField1 = boletoValidator.validateDvMod11(fields[1]);
+    isValidField2 = boletoValidator.validateDvMod11(fields[1]);
+    isValidField3 = boletoValidator.validateDvMod11(fields[2]);
+    isValidField4 = boletoValidator.validateDvMod11(fields[3]);
+  }
+
+  if (!isValidField1 || !isValidField2 || !isValidField3 || !isValidField4) {
+    throw new BadRequest('Digito de verificação inválido');
+  }
+
+  const barCode = convenioToBarCode(fields);
+  const amount = getAmount(barCode.slice(4, 15));
+
+  return { barCode, amount };
+};
