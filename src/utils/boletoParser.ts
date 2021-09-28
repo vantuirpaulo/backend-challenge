@@ -1,3 +1,8 @@
+import { add, format } from 'date-fns';
+
+export const FACTOR_NUMBER = 1000;
+export const BASE_DATE = '2000-07-03';
+
 export const parseTitulo = (code: string): Array<string> => {
   const fields = [];
   const lastDigit = code.length + 1;
@@ -24,7 +29,6 @@ export const parseConvenio = (code: string): Array<string> => {
 };
 
 export const tituloToBarCode = (fields: Array<string>): string => {
-
   const fieldA = fields[0].slice(0, 3);
   const fieldB = fields[0].slice(3, 4);
   const fieldC = fields[0].slice(4, 9);
@@ -44,4 +48,20 @@ export const convenioToBarCode = (fields: Array<string>): string => {
   const fieldD = fields[3].slice(0, -1);
 
   return fieldA + fieldB + fieldC + fieldD;
-}
+};
+
+export const getExpirationDate = (factor: string): string => {
+  const baseDate = new Date(BASE_DATE);
+  const days = parseInt(factor) - FACTOR_NUMBER
+  const expirationDate = add(
+    new Date(baseDate.valueOf() + baseDate.getTimezoneOffset() * 60 * 1000),
+    { days }
+  );
+
+  return format(expirationDate, 'yyyy-MM-dd');
+};
+
+export const getAmount = (amount: string): string => {
+   const value = parseInt(amount) / 100;
+   return value.toFixed(2);
+};

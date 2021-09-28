@@ -58,3 +58,19 @@ describe('Convert a typed line into a bar code', () => {
     expect(result).toEqual(data.validConvenioBarCode);
   });
 });
+
+describe('Get expiration date by factor', () => {
+  it('should return a valid expiration date', () => {
+    const result = boletoParser.getExpirationDate('7587');
+
+    expect(result).toBe('2018-07-16');
+  });
+});
+
+describe('Get the amount of boleto', () => {
+  it('should return the amount as string', () => {
+    const result = boletoParser.getAmount('0000002000')
+
+    expect(result).toBe('20.00');
+  })
+})
