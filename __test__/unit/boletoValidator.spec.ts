@@ -9,7 +9,7 @@ const data = {
   validBoletoField: '836300000012',
   invalidBoletoField: '223258756112',
 
-  validCodeMod11: '00193373700000001000500940144816060680935031'
+  validCodeMod11BarCode: '00193373700000001000500940144816060680935031',
 };
 
 describe('Validate a boleto code', () => {
@@ -48,18 +48,31 @@ describe('Validate code using module 10', () => {
   });
 
   it('should be an invalid boleto code field', () => {
-    const result = boletoValidator.validateDvMod10(
-      data.invalidBoletoField
-    );
+    const result = boletoValidator.validateDvMod10(data.invalidBoletoField);
 
     expect(result).toBe(false);
   });
 });
 
-describe('Validate field using module 11', () => {
-  it('should be a valid boleto code', () => {
-    const result = boletoValidator.validateDvMod11(data.validCodeMod11);
+describe('Validate fields using module 11', () => {
+  it('should be a valid boleto fields', () => {
+    const result = [
+      '838600000050',
+      '096000190009',
+      '000801782309',
+      '000343062712',
+    ].map(boletoValidator.validateDvMod11);
+
+    expect(result).toEqual([true, true, true, true]);
+  });
+});
+
+describe('Validate barcode using module 11', () => {
+  it('should be a valid boleto barcode', () => {
+    const result = boletoValidator.validateDvMod11BarCode(
+      data.validCodeMod11BarCode
+    );
 
     expect(result).toBe(true);
-  })
-})
+  });
+});
