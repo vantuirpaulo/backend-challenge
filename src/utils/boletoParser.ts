@@ -3,7 +3,7 @@ import { add, format } from 'date-fns';
 export const FACTOR_NUMBER = 1000;
 export const BASE_DATE = '2000-07-03';
 
-export const parseTitulo = (code: string): Array<string> => {
+export const getFieldsBoletoTitulo = (code: string): Array<string> => {
   const fields = [];
   const lastDigit = code.length + 1;
 
@@ -16,7 +16,7 @@ export const parseTitulo = (code: string): Array<string> => {
   return fields;
 };
 
-export const parseConvenio = (code: string): Array<string> => {
+export const getFieldsBoletoConvenio = (code: string): Array<string> => {
   const fields = [];
   const lastDigit = code.length + 1;
 

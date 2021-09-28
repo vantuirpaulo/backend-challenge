@@ -8,8 +8,8 @@ const data = {
 };
 
 describe('Boleto de Titulo parser', () => {
-  it('should parse a valid boleto de titulo', () => {
-    const result = boletoParser.parseTitulo(data.validBoletoTitulo);
+  it('should return fields of a valid boleto de titulo', () => {
+    const result = boletoParser.getFieldsBoletoTitulo(data.validBoletoTitulo);
 
     expect(result).toEqual([
       '2129000119',
@@ -22,8 +22,8 @@ describe('Boleto de Titulo parser', () => {
 });
 
 describe('Boleto de Convênio parser', () => {
-  it('should parse a valid boleto de convênio', () => {
-    const result = boletoParser.parseConvenio(data.validBoletoConvenio);
+  it('should return fields of a valid boleto de convênio', () => {
+    const result = boletoParser.getFieldsBoletoConvenio(data.validBoletoConvenio);
 
     expect(result).toEqual([
       '836300000012',
