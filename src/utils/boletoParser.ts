@@ -1,7 +1,16 @@
 import { add, format } from 'date-fns';
 
-export const FACTOR_NUMBER = 1000;
-export const BASE_DATE = '2000-07-03';
+import * as boletoValidator from './boletoValidator';
+import { BadRequest } from './errors';
+
+const FACTOR_NUMBER = 1000;
+const BASE_DATE = '2000-07-03';
+
+export type BoletoProps = {
+  barCode: string;
+  amount?: string;
+  expirationDate?: string;
+};
 
 export const getFieldsBoletoTitulo = (code: string): Array<string> => {
   const fields = [];
@@ -52,7 +61,7 @@ export const convenioToBarCode = (fields: Array<string>): string => {
 
 export const getExpirationDate = (factor: string): string => {
   const baseDate = new Date(BASE_DATE);
-  const days = parseInt(factor) - FACTOR_NUMBER
+  const days = parseInt(factor) - FACTOR_NUMBER;
   const expirationDate = add(
     new Date(baseDate.valueOf() + baseDate.getTimezoneOffset() * 60 * 1000),
     { days }
@@ -62,6 +71,27 @@ export const getExpirationDate = (factor: string): string => {
 };
 
 export const getAmount = (amount: string): string => {
-   const value = parseInt(amount) / 100;
-   return value.toFixed(2);
+  const value = parseInt(amount) / 100;
+  return value.toFixed(2);
+};
+
+export const parseBoletoTitulo = (code: string): BoletoProps => {
+  const fields = getFieldsBoletoTitulo(code);
+
+  const isValidField1 = boletoValidator.validateDvMod10(fields[0]);
+  const isValidField2 = boletoValidator.validateDvMod10(fields[1]);
+  const isValidField3 = boletoValidator.validateDvMod10(fields[2]);
+
+  if (!isValidField1 || !isValidField2 || !isValidField3) {
+    throw new BadRequest('Digito de verificação inválido');
+  }
+
+  const factor = fields[4].slice(0, 4);
+  const unformattedAmount = fields[4].slice(4, 14);
+
+  const barCode = tituloToBarCode(fields);
+  const amount = getAmount(unformattedAmount);
+  const expirationDate = getExpirationDate(factor);
+
+  return { barCode, amount, expirationDate };
 };

@@ -23,7 +23,9 @@ describe('Boleto de Titulo parser', () => {
 
 describe('Boleto de Convênio parser', () => {
   it('should return fields of a valid boleto de convênio', () => {
-    const result = boletoParser.getFieldsBoletoConvenio(data.validBoletoConvenio);
+    const result = boletoParser.getFieldsBoletoConvenio(
+      data.validBoletoConvenio
+    );
 
     expect(result).toEqual([
       '836300000012',
@@ -69,8 +71,20 @@ describe('Get expiration date by factor', () => {
 
 describe('Get the amount of boleto', () => {
   it('should return the amount as string', () => {
-    const result = boletoParser.getAmount('0000002000')
+    const result = boletoParser.getAmount('0000002000');
 
     expect(result).toBe('20.00');
-  })
-})
+  });
+});
+
+describe('Boleto parser', () => {
+  it('should return informations from the typed line of a boleto de titulo', () => {
+    const result = boletoParser.parseBoletoTitulo(data.validBoletoTitulo);
+
+    expect(result).toEqual({
+      barCode: '21299758700000020000001121100012100447561740',
+      amount: '20.00',
+      expirationDate: '2018-07-16',
+    });
+  });
+});
