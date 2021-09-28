@@ -4,7 +4,7 @@ export const isValidCodeFormat = (code: string): boolean =>
 export const isValidCodeLength = (code: string): boolean =>
   code.length >= 46 && code.length <= 48;
 
-export const validateDvFieldMod10 = (field: string): boolean => {
+export const validateDvMod10 = (field: string): boolean => {
   const dv = parseInt(field.slice(-1));
   const code = field.slice(0, -1);
 
@@ -21,4 +21,24 @@ export const validateDvFieldMod10 = (field: string): boolean => {
   const calcDv = 10 - (sum % 10);
 
   return dv === calcDv;
+};
+
+export const validateDvMod11 = (field: string): Boolean => {
+  const dv = parseInt(field.slice(4, 5));
+
+  if (dv === 0) return false;
+
+  const firstSlice = field.slice(0, 4);
+  const secondSlice = field.slice(5, 44);
+  const code = firstSlice + secondSlice;
+
+  const multipliedByWeight = [...code]
+    .reverse()
+    .map((item, i) => parseInt(item) * ((i % 8) + 2));
+
+  const digitSum = multipliedByWeight.reduce((acc, item) => acc + item);
+
+  const calcDv = 11 - (digitSum % 11);
+
+  return calcDv === dv;
 };

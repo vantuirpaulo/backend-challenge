@@ -1,4 +1,4 @@
-import * as boletoValidator from '../../src/validators/boletoValidator';
+import * as boletoValidator from '../../src/utils/boletoValidator';
 
 const data = {
   validBoletoTitulo: '21290001192110001210904475617405975870000002000',
@@ -8,6 +8,8 @@ const data = {
 
   validBoletoField: '836300000012',
   invalidBoletoField: '223258756112',
+
+  validCodeMod11: '00193373700000001000500940144816060680935031'
 };
 
 describe('Validate a boleto code', () => {
@@ -38,18 +40,26 @@ describe('Validate a boleto code', () => {
   });
 });
 
-describe('Validate field using module 10', () => {
-  it('should be a valid boleto code field', () => {
-    const result = boletoValidator.validateDvFieldMod10(data.validBoletoField);
+describe('Validate code using module 10', () => {
+  it('should be a valid boleto code', () => {
+    const result = boletoValidator.validateDvMod10(data.validBoletoField);
 
     expect(result).toBe(true);
   });
 
   it('should be an invalid boleto code field', () => {
-    const result = boletoValidator.validateDvFieldMod10(
+    const result = boletoValidator.validateDvMod10(
       data.invalidBoletoField
     );
 
     expect(result).toBe(false);
   });
 });
+
+describe('Validate field using module 11', () => {
+  it('should be a valid boleto code', () => {
+    const result = boletoValidator.validateDvMod11(data.validCodeMod11);
+
+    expect(result).toBe(true);
+  })
+})
